@@ -19,7 +19,8 @@ body {
 }
 
 /* ----------- Registration Page ----------- */
-.auth-container {
+.auth-container,
+.edit-container {
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -29,30 +30,43 @@ body {
   gap: 1rem;
   background-color: #131324;
 }
+
+.edit-container {
+  background-color: rgba(38, 38, 41, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .auth-container .brand {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
 }
-.auth-container .brand img {
-  height: 4rem;
+.auth-container .brand svg {
+  color: #4e0eff;
+  margin-top: -5px;
 }
 .auth-container .brand h3 {
-  color: white;
+  color: #4e0eff;
   font-style: italic;
+  font-size: 40px;
+  text-shadow: 1px 1px 1px white;
 }
 
-.auth-container form {
+.auth-container form,
+.edit-container form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background-color: #00000076;
+  background-color: #131324;
   border-radius: 1rem;
   padding: 2rem 5rem;
+  position: relative;
 }
 
-.auth-container form input {
+.auth-container form input,
+.edit-container form input {
   background-color: transparent;
   padding: 0.5rem;
   width: 100%;
@@ -62,12 +76,14 @@ body {
   color: white;
 }
 
-.auth-container form input:focus {
+.auth-container form input:focus,
+.edit-container form input:focus {
   border: 0.1rem solid #997af0;
   outline: none;
 }
 
-.auth-container form button {
+.auth-container form button,
+.edit-container form button {
   background-color: #997af0;
   color: white;
   border: none;
@@ -78,7 +94,8 @@ body {
   text-transform: uppercase;
   transition: 0.5s ease-in-out;
 }
-.auth-container form button:hover {
+.auth-container form button:hover,
+.edit-container form button:hover {
   background-color: #4e0eff;
 }
 .auth-container form span {
@@ -94,7 +111,7 @@ body {
 /* ----------- Chat Page ----------- */
 .chat-container {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   background-color: #131324;
 }
@@ -116,7 +133,9 @@ body {
 }
 .chat-container .profile-nav .profile h5 {
   color: #ebe7ff;
-  margin-top: 15px;
+}
+.onlineUser {
+  color: rgb(8, 236, 8);
 }
 .chat-container .profile-nav .image {
   position: relative;
@@ -150,7 +169,7 @@ body {
 
 .chat-container .chat-field {
   width: 100%;
-  height: 100%;
+  height: 90vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
     url("https://media.istockphoto.com/id/498309616/photo/great-ocean-road-at-night-milky-way-view.jpg?s=612x612&w=0&k=20&c=fJGWCAB4JoXaQD6gjJRHjPmPIRvx5e6K-1Oq2EeOZwk=");
   background-position: center;
@@ -178,10 +197,10 @@ body {
   cursor: pointer;
 }
 .sideIcons-container .bottom {
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 .sideIcons-container .profile {
   height: 2rem;
@@ -206,31 +225,31 @@ gap: 1.5rem;
   color: #ebe7ff;
 }
 
-
 .sideIcons-container .profile img {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 .sideIcons-container div[id] {
-position: relative;
+  position: relative;
 }
-.sideIcons-container .current{
-border-left: 3px solid #9186f3;
-color: #9186f3;
-padding: 0 5px;
-transition: .3s ease;
+.sideIcons-container .current {
+  border-left: 3px solid #9186f3;
+  color: #9186f3;
+  padding: 0 5px;
+  transition: 0.3s ease;
 }
-.sideIcons-container div[id]:hover::after,.sideIcons-container div[id]:focus::after {
-position: absolute;
-content: attr(id);
-background-color: #080420;
-color: white;
-font-size: 15px;
-left: 0;
-top: -20px;
-padding: 5px 10px;
-border-radius: 5px;
+.sideIcons-container div[id]:hover::after,
+.sideIcons-container div[id]:focus::after {
+  position: absolute;
+  content: attr(id);
+  background-color: #080420;
+  color: white;
+  font-size: 15px;
+  left: 0;
+  top: -20px;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 /* ----------- Profile Component ----------- */
@@ -240,8 +259,9 @@ border-radius: 5px;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 5rem 20px;
-  z-index: 2;
+  z-index: 10;
 }
+
 .profile-container .profile {
   position: relative;
   height: 80vh;
@@ -314,7 +334,8 @@ border-radius: 5px;
   cursor: pointer;
 }
 
-.profile-container .profile .close {
+.profile-container .profile .close,
+.edit-container .close {
   position: absolute;
   height: 2rem;
   width: 2.8rem;
@@ -327,12 +348,13 @@ border-radius: 5px;
   right: 10px;
   cursor: pointer;
 }
-.profile-container .profile .close:hover {
+.profile-container .profile .close:hover,
+.edit-container .close:hover {
   background-color: rgba(80, 77, 77, 0.3);
 }
 .profile-container .profile .uploading {
-position: absolute;
-top: 0;
+  position: absolute;
+  top: 0;
   height: 250px;
   width: 250px;
   overflow: hidden;
@@ -343,7 +365,9 @@ top: 0;
 /* ----------- Contacts Component ----------- */
 .contacts-container .contacts {
   height: 80vh;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
 }
 .contacts-container .contact {
   display: flex;
@@ -351,12 +375,14 @@ top: 0;
   gap: 1rem;
   margin: 1rem 0;
   cursor: pointer;
-  transition: 0.5s ease-in-out;
-  background-color: rgba(124, 131, 138,0.1);
+  transition: 0.2s ease-in-out;
+  background-color: rgba(124, 131, 138, 0.1);
   border-radius: 3px;
+  position: relative;
+  width: 100%;
 }
 .contacts-container .selected {
-  background-color: #9186f3;
+  background-color: #343150;
 }
 .contacts-container .contact .image {
   position: relative;
@@ -364,6 +390,20 @@ top: 0;
   height: 3rem;
   overflow: hidden;
   border-radius: 50%;
+}
+.contacts-container .contact .myChats {
+  position: relative;
+  width: 50%;
+}
+
+.contacts-container .contact .username,.profile-nav .profile .currentGroupName{
+width: 80%;
+}
+.contacts-container .contact .username h4, .profile-nav .profile .currentGroupName h5{
+width: 99%;
+ white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .contacts-container .contact .image img {
   position: absolute;
@@ -390,6 +430,7 @@ padding-top: 1rem;
 /* ----------- Welcome Component ----------- */
 .welcome-container {
   height: 100%;
+  /* width: 100%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -409,6 +450,9 @@ padding-top: 1rem;
   gap: 1rem;
   padding: 10px 20px;
   background-color: #131324;
+  /* position: absolute; */
+  /* width:100%; */
+  /* bottom: 0; */
 }
 
 .chatInput-container .emoji {
@@ -426,8 +470,9 @@ padding-top: 1rem;
   color: white;
   border: none;
   outline: none;
-  padding-left: 1rem;
+  padding:0 1.2rem;
   font-size: 1.2rem;
+
 }
 .chatInput-container .send {
   position: relative;
@@ -451,7 +496,7 @@ padding-top: 1rem;
 
 /* ----------- Message Component ----------- */
 .message-container {
-  height: 83vh;
+  height: 81vh;
   padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
@@ -473,22 +518,25 @@ padding-top: 1rem;
 .message-container .message .content {
   max-width: 50%;
   overflow-wrap: break-word;
-  padding: 1rem;
+  padding: 0.4rem;
   font-size: 1.1rem;
-  border-radius: 1rem;
   color: #d1d1d1;
+}
+.message-container .message .content .textTime {
+  font-size: 12px;
 }
 .message-container .sent {
   justify-content: flex-end;
 }
 .message-container .sent .content {
-  /* background-color: #4f04ff21; */
+  border-radius: 0.8rem 0.8rem 0 0.8rem;
   background-color: #395dff5d;
 }
 .message-container .received {
   justify-content: flex-start;
 }
 .message-container .received .content {
+  border-radius: 0.8rem 0.8rem 0.8rem 0;
   background-color: #2f1a3d9a;
   /* background-color: #395dff; */
 }
@@ -527,18 +575,18 @@ padding-top: 1rem;
 }
 
 /* ----------- Camera Component ----------- */
-.camera-container{
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
+.camera-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.camera-container .camera{
-position: relative;
+.camera-container .camera {
+  position: relative;
 }
 
 .camera-container .close {
@@ -555,61 +603,69 @@ position: relative;
   cursor: pointer;
 }
 .camera-container .close:hover {
-background-color: rgba(80, 77, 77, 0.3);
+  background-color: rgba(80, 77, 77, 0.3);
 }
 
-.camera-container .capture-button{
-position:absolute;
-font-size: 2rem;
-padding: 10px;
-bottom: 20px;
-border-radius: 100%;
-display: flex;
-justify-content: center;
-align-items: center;
-margin: 0 auto;
-left: 45%;
-border: 2px solid rgb(255, 60, 0);
+.camera-container .capture-button {
+  position: absolute;
+  font-size: 2rem;
+  padding: 10px;
+  bottom: 20px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  left: 45%;
+  border: 2px solid rgb(255, 60, 0);
 }
-.camera-container .capture-button:hover{
-background-color: rgb(155, 152, 152);
+.camera-container .capture-button:hover {
+  background-color: rgb(155, 152, 152);
 }
-.camera-container .upload{
-position: absolute;
-bottom: 20px;
-display: flex;
-width: 15rem;
-justify-content: space-between;
-left: 30%;
+.camera-container .upload {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  width: 15rem;
+  justify-content: space-between;
+  left: 30%;
 }
 
 /* ----------- ImageView Component ----------- */
-.imageView-container{
-background-color: rgba(0, 0, 0, 0.8);
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
+.imageView-container {
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
-.imageView-container img{
-height: 600px;
-width: 600px;
-border: 2px solid white;
+.imageView-container img {
+  height: 600px;
+  width: 600px;
+  border: 2px solid white;
 }
 
+/* @media screen and (max-width: 800) {
+  .imageView-container img {
+    height: 400px;
+    width: 400px;
+  }
+} */
+
 /* ----------- Current_Chat_Profile ----------- */
-.current-chat-Details{
-background-color: rgba(0, 0, 0, 0.8);
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100vh;
-padding: 5rem 20px;
+.current-chat-Details {
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 5rem 20px;
 }
 .current-chat-Details .chat-profile {
   position: relative;
@@ -638,7 +694,7 @@ padding: 5rem 20px;
   cursor: pointer;
   border-radius: 100%;
   overflow: hidden;
-   /* position: relative; */
+  position: relative;
   height: 250px;
   width: 250px;
   margin: 0 auto;
@@ -647,4 +703,281 @@ padding: 5rem 20px;
   height: 250px;
   width: 250px;
   object-fit: cover;
+}
+
+/* ---------- Chats ------------ */
+.chattedPersonCover{
+width: 70%;
+}
+
+.chatHistory {
+width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Group ------------ */
+.form-floating input,
+.form-floating input:focus {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  border-bottom: 3px solid rgb(15, 116, 184);
+  color: white;
+  box-shadow: none;
+}
+
+.moreVertical {
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 5px;
+  transition: 0.2s ease-in-out;
+}
+.moreVertical:active {
+  background-color: rgba(148, 144, 144, 0.6);
+  margin-top: 3px;
+}
+
+/* ---------- Drop Down ------------ */
+.dropDown {
+  color: rgb(175, 174, 174);
+  position: absolute;
+  padding: 15px;
+  background-color: #080420;
+  right: 0;
+}
+.dropDown ul li {
+  line-height: 40px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 10px;
+  border-radius: 3px;
+}
+.dropDown ul li:hover {
+  background-color: #a198f5;
+  color: #080420;
+}
+.addGroup:hover {
+  background-color: #a198f5;
+  /* color: #080420; */
+}
+
+/* ---------- Group Members ------------ */
+.admin {
+  display: flex;
+  justify-content: space-between;
+}
+.admin span {
+  margin-right: 5px;
+  color: rgb(8, 236, 8);
+}
+/* ---------- Group Information ------------ */
+
+.groupInfo .cover {
+  position: relative;
+  height: 250px;
+  width: 250px;
+  margin: 0 auto;
+  border-radius: 100%;
+}
+
+.groupInfo .image {
+  cursor: pointer;
+  border-radius: 100%;
+  overflow: hidden;
+}
+.groupInfo .image img {
+  height: 250px;
+  width: 250px;
+  object-fit: cover;
+}
+.groupInfo .cover .camera {
+  position: absolute;
+  height: 2.8rem;
+  width: 2.8rem;
+  background-color: rgba(80, 77, 77, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  top: 11rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+.groupInfo .cover .gallery {
+  background-color: #8484889a;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 10px;
+  font-size: 1.5rem;
+  position: relative;
+}
+.groupInfo .cover .gallery input {
+  cursor: pointer;
+  font-size: 15px;
+  position: absolute;
+  top: 20px;
+  right: 3.3rem;
+  width: 30px;
+  opacity: 0;
+}
+.groupInfo .cover .gallery .get-picture {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #080420;
+  border-radius: 50%;
+  transition: 0.3s ease-in-out;
+}
+.groupInfo .cover .gallery .get-picture:hover {
+  background-color: #d3d0e4;
+}
+.groupInfo .cover .gallery svg {
+  cursor: pointer;
+  color: #080420;
+}
+
+.editBtnOpen {
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 100%;
+  background-color: #127412;
+}
+
+.editBtnOpen:active,
+.profileEdit:active {
+  background-color: #03580e;
+}
+
+.profileEdit {
+  background-color: #127412;
+  border: none;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.2s;
+  padding: 5px 20px;
+}
+
+.editBtnClose {
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 100%;
+  background-color: #d82708;
+}
+.editBtnClose:active {
+  background-color: #b91b06;
+}
+
+.thisMember:active {
+  background-color: #7766da;
+}
+
+/* ---------- navbar on small devices Component ------------ */
+.navb {
+  height: 3rem;
+  padding-top: 12px;
+}
+
+.navb ul li {
+  padding: 0 5px;
+  font-weight: 500;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.navb ul .current {
+  color: #9186f3;
+}
+
+.navb ul li::after {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background: #9186f3;
+  display: block;
+  margin: auto;
+  transition: 0.5s;
+  margin-top: 5px;
+}
+.navb ul .current::after {
+  width: 100%;
+}
+
+/* ---------- Profile on small devices Component ------------ */
+.deviceProfile .profile .cover {
+  background-color: #03580e;
+  position: relative;
+  height: 250px;
+  width: 250px;
+  margin: 0 auto;
+  border-radius: 100%;
+}
+
+.deviceProfile .profile .image {
+  cursor: pointer;
+  border-radius: 100%;
+  overflow: hidden;
+}
+.deviceProfile .profile .image img {
+  height: 250px;
+  width: 250px;
+  object-fit: cover;
+}
+
+.deviceProfile .profile .cover .gallery {
+  background-color: #8484889a;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 10px;
+  font-size: 1.5rem;
+  position: relative;
+}
+.deviceProfile .profile .cover .gallery input {
+  cursor: pointer;
+  font-size: 15px;
+  position: absolute;
+  top: 20px;
+  right: 3.3rem;
+  width: 30px;
+  opacity: 0;
+}
+.deviceProfile .profile .cover .gallery .get-picture {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #080420;
+  border-radius: 50%;
+  transition: 0.3s ease-in-out;
+}
+.deviceProfile .profile .cover .gallery .get-picture:hover {
+  background-color: #d3d0e4;
+}
+.deviceProfile .profile .cover .gallery svg {
+  cursor: pointer;
+  color: #080420;
+}
+
+.deviceProfile .profile .cover .camera {
+  position: absolute;
+  height: 2.8rem;
+  width: 2.8rem;
+  background-color: rgba(80, 77, 77, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  top: 11rem;
+  right: 0;
+  cursor: pointer;
 }

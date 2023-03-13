@@ -1,6 +1,6 @@
 import React from "react";
 
-const ImageView = ({ setViewProfilePicture, profile, currentUser }) => {
+const ImageView = ({ setViewProfilePicture, currentUser }) => {
   // const closeIt = () => {
   //     new WOW.WOW().init();
   //     document.querySelector(".wow").classList.remove("bounceInUp");
@@ -28,8 +28,10 @@ const ImageView = ({ setViewProfilePicture, profile, currentUser }) => {
       <img
       className="image animate__animated animate__zoomIn"
         onClick={closeViewImage}
-        src={currentUser.isProfileImageSet ? currentUser.profileImage : profile}
+        src={currentUser.profileImage}
         alt=""
+        // height={400}
+        // width={400}
       />
     </div>
   );

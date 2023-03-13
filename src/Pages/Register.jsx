@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BsFillChatFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 import Logo from "../asset/logo.svg";
+import ToastContainer from "../Components/Toast/Toast";
+import { setToast } from "../Components/Toast/toastUtils";
 import { registerRoute } from "../Utils/APIRoutes";
 
 const Register = () => {
     const navigate = useNavigate();
+
   const [values, setvalues] = useState({
     firstName: "",
     lastName: "",
@@ -22,23 +25,13 @@ const Register = () => {
     }
   }, []);
 
-
-  const toastOptions = {
-    position: "bottom-right",
-    autoClose: 5000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
-
   const handleChange = (e) => {
     e.preventDefault();
     setvalues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (handleVerification()) {
-    // }
+    if (handleVerification()) {
     const { firstName, lastName, userName, email, password } = values;
 
     const { data } = await axios.post(registerRoute, {
@@ -50,48 +43,38 @@ const Register = () => {
     });
     console.log(data);
     if (data.status) {
+    setToast("success","Registration successful")
       localStorage.setItem("current_user", JSON.stringify(data.user));
       navigate("/");
+    }else{
+    setToast("error",data.message)
+    }
     }
   };
+
+
 
 
   const handleVerification = () => {
     const { firstName, lastName, userName, email, password, confirmPassword } =
       values;
     if (firstName.length < 3 || firstName.length > 20) {
-      toast.error(
-        "First Name should not be less than 3 or greater than 20 characters",
-        toastOptions
-      );
+     setToast("error","First name should not be less than 3 or greater than 20 characters")
       return false;
     } else if (lastName.length < 3 || lastName.length > 20) {
-      console.log("seen");
-      toast.error(
-        "Last Name should not be less than 3 or greater than 20 characters",
-        toastOptions
-      );
+      setToast("error","Last name should not be less than 3 or greater than 20 characters")
       return false;
     } else if (userName.length < 3 || userName.length > 15) {
-      toast.error(
-        "Username should not be less than 3 or greater than 15 characters",
-        toastOptions
-      );
+      setToast("error","Username should not be less than 3 or greater than 15 characters")
       return false;
     } else if (email === "") {
-      toast.error("Email is required", toastOptions);
+      setToast("error","Email is required")
       return false;
     } else if (password < 5) {
-      toast.error(
-        "Password should not be less than 5 characters",
-        toastOptions
-      );
+      setToast("error","Password should not be less than 5 characters")
       return false;
     } else if (confirmPassword !== password) {
-      toast.error(
-        "Password and confirm password should be the same",
-        toastOptions
-      );
+      setToast("error","Password and confirm password should be the same")
       return false;
     }
     return true;
@@ -102,7 +85,7 @@ const Register = () => {
       <div className="auth-container">
         <form onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
-            <img src={Logo} alt="logo" />
+          <BsFillChatFill size={50}/>
             <h3>Let's Discuss</h3>
           </div>
           <input
@@ -153,7 +136,7 @@ const Register = () => {
             Already have an account? <Link to="/login">Login here</Link>
           </span>
         </form>
-        <ToastContainer />
+        <ToastContainer/>
       </div>
     </>
   );

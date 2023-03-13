@@ -2,15 +2,19 @@ import React from "react";
 import { MdOutlineContacts, MdOutlineLogout } from "react-icons/md";
 import { BsChatText } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import profile from "../asset/default_user_image.png";
 import { useNavigate } from "react-router-dom";
 
-const SideIcons = ({ open, currentUser,currentPosition, setCurrentPosition }) => {
+const SideIcons = ({ open, currentUser,currentPosition, setCurrentPosition,socket }) => {
 const navigate=useNavigate()
  const logOut = () => {
+ console.log(socket);
+if (socket) {
+   socket.disconnect()
+  //  socket.emit('disconnectMe',currentUser._id)
     localStorage.removeItem("current_user");
     navigate("/login");
   };
+}
 
 const changePosition=(name)=>{
 setCurrentPosition(name)
@@ -35,11 +39,7 @@ setCurrentPosition(name)
             <div id="Profile">
               <div className="profile" onClick={open}>
                 <img
-                  src={
-                    currentUser.isProfileImageSet
-                      ? currentUser.profileImage
-                      : profile
-                  }
+                  src={currentUser.profileImage}
                   alt="picture"
                 />
               </div>

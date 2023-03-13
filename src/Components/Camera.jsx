@@ -33,7 +33,7 @@ const Camera = ({setFile,setTakePicture}) => {
           </div>
       {capturedImage ? (
         <div className="camera">
-          <img height={700} width={600} src={capturedImage} alt="" />
+          <img height={600} width={500} src={capturedImage} alt="" />
           <div className="upload">
             <button
               className="btn btn-danger"
@@ -54,8 +54,8 @@ const Camera = ({setFile,setTakePicture}) => {
           <Webcam
           className="webCam"
             ref={cameraRef}
-            height={700}
-            width={600}
+            height={600}
+            width={500}
             audio={false}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}

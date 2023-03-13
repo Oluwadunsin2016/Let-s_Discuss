@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import pic from "../asset/default_user_image.png";
 import 'animate.css'
 import { MdOutlineClose } from "react-icons/md";
 import { useEffect } from "react";
@@ -39,16 +38,14 @@ const CurrentChatDetails = ({ currentChat, cover }) => {
     <div className="current-chat-Details">
       <div className="animation animate__animated animate__backInDown">
         {currentChat && (
-          <div className="chat-profile text-white bg-dark col-md-6 px-5 py-2">
+          <div className="chat-profile text-white bg-dark col-12 col-md-8 col-lg-6 px-md-2 px-5 py-2">
             <div className="close" onClick={closeIt}>
               <MdOutlineClose />
             </div>
             <div className="image my-5">
               <img
                 onClick={() => setViewCurrentChatProfilePicture(true)}
-                src={
-                  currentChat.isProfileImageSet ? currentChat.profileImage : pic
-                }
+                src={currentChat.profileImage}
                 alt=""
               />
             </div>
@@ -74,7 +71,7 @@ const CurrentChatDetails = ({ currentChat, cover }) => {
           <img
           className="image animate__animated animate__zoomIn"
             onClick={closeViewImage}
-            src={currentChat.isProfileImageSet ? currentChat.profileImage : pic}
+            src={currentChat.profileImage}
             alt=""
           />
         </div>

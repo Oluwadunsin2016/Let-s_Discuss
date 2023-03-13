@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { HiOutlineCamera } from "react-icons/hi";
-import { MdOutlineClose } from "react-icons/md";
-import { BsImages, BsCamera } from "react-icons/bs";
-import axios from "axios";
-import { fileUploadRoute } from "../Utils/APIRoutes";
-import CircularProgressBar from "./CircularProgressBar";
-import { CompletedSign } from "./CompletedSign";
-import Camera from "./Camera";
-import ImageView from "./ImageView";
-import "animate.css"
-import { AiFillEdit } from "react-icons/ai";
-import EditProfileModal from "./EditProfileModal";
+import axios from 'axios';
+import React from 'react'
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { AiFillEdit } from 'react-icons/ai';
+import { BsCamera, BsImages } from 'react-icons/bs';
+import { HiOutlineCamera } from 'react-icons/hi';
+import { fileUploadRoute } from '../Utils/APIRoutes';
+import Camera from './Camera';
+import CircularProgressBar from './CircularProgressBar';
+import { CompletedSign } from './CompletedSign';
+import EditProfileModal from './EditProfileModal';
+import ImageView from './ImageView';
 
-const Profile = ({
-  close,
+const DeviceProfile = ({
   currentUser,
   setIsProfilePictureSet,
   isCompleted,
   setIsCompleted,
-  setcurrentUser
-}) => {
+  setcurrentUser}) => {
   const [file, setFile] = useState("");
   const [pictureChangeMode, setpictureChangeMode] = useState(false);
   const [isuploading, setIsUploading] = useState(false);
@@ -77,24 +75,12 @@ console.log(currentUser);
       });
   };
 
-  const closeIt = () => {
-    document.querySelector(".animation").classList.remove("animate__fadeInBottomLeft");
-    document.querySelector(".animation").classList.add("animate__fadeOutBottomLeft");
-   setTimeout(()=>{
-    close();
-    document.querySelector(".animation").classList.remove("animate__fadeOutBottomLeft");
-    document.querySelector(".animation").classList.add("animate__fadeInBottomLeft");
-   },1000)
-  };
-
   return (
-    <div className="profile-container">
-      <div className="animation animate__animated animate__fadeInBottomLeft">
+     <div className="contacts-container d-md-none px-4 text-white">
+      <h3 className="text-center text-white py-4">Profile</h3>
+      <div className="contacts deviceProfile">
         {currentUser && (
-          <div className="profile text-white bg-dark col-md-6 col-12 col-md-8 col-lg-6 px-md-2 px-5 py-2">
-            <div className="close" onClick={closeIt}>
-              <MdOutlineClose />
-            </div>
+          <div className="profile px-sm-4">
             <div className="cover my-5">
               <div className="image">
                 <img
@@ -170,7 +156,7 @@ console.log(currentUser);
         )}
         {editMode && <EditProfileModal setcurrentUser={setcurrentUser} currentUser={currentUser} setEditMode={setEditMode}/>}
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default DeviceProfile
