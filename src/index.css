@@ -50,7 +50,7 @@ body {
 .auth-container .brand h3 {
   color: #4e0eff;
   font-style: italic;
-  font-size: 40px;
+  /* font-size: 40px; */
   text-shadow: 1px 1px 1px white;
 }
 

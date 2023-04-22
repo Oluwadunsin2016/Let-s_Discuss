@@ -78,7 +78,7 @@ const Chats = ({
     <div className="contacts-container px-4 pt-md-0 pt-4">
       <h3 className="text-center text-white py-4 d-none d-md-block">Chats</h3>
       <div className="contacts">
-        {chats == [] || chats == undefined ? (
+        {chats.length==0 ? (
           <div className="text-white text-center">
             <h5>Your chat history is empty!</h5>
           </div>

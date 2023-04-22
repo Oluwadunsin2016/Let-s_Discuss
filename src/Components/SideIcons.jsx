@@ -9,8 +9,8 @@ const navigate=useNavigate()
  const logOut = () => {
  console.log(socket);
 if (socket) {
-   socket.disconnect()
   //  socket.emit('disconnectMe',currentUser._id)
+   socket.disconnect()
     localStorage.removeItem("current_user");
     navigate("/login");
   };

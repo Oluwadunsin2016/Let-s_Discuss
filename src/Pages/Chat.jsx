@@ -31,7 +31,7 @@ import LastSeen from "../Components/LastSeen";
 
 const Chat = () => {
   const navigate = useNavigate();
-  // const socket = useRef();
+  const socket = useRef();
   const [contacts, setContacts] = useState([]);
   const [chats, setChats] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
@@ -77,40 +77,51 @@ const Chat = () => {
   };
 
   // To keep track of the online Users
-    // socket.current = io(host);
-    const  socket = io(host);
+    socket.current = io(host);
+    // const  socket = io(host);
   useEffect(() => {
     if (currentUser) {
-      console.log(socket);
-      socket.emit("add-user", currentUser._id);
+      // console.log(socket.current);
+      socket.current.emit("add-user", currentUser._id);
 
-      socket.on("onlineUsers", (users) => {
+      socket.current.on("onlineUsers", (users) => {
         const loggedOut = loggedOutUsers.filter(
           (user) => user.loggedOutUserId == currentUser._id
         );
         localStorage.setItem("loggedOutUsers", JSON.stringify(loggedOut));
-        setLoggedOutUsers([...loggedOutUsers, loggedOut]);
+        setLoggedOutUsers(loggedOut);
         setOnlineUsers(users);
       });
 
-      socket.on("userDisconnected", ({ loggedOutUserId, lastSeen }) => {
-        setOnlineUsers((users) =>
-          users.filter((user) => user !== loggedOutUserId)
-        );
+      socket.current.on("userDisconnected", ({ loggedOutUserId, lastSeen }) => {
+        // setOnlineUsers((users) =>
+        //   users.filter((user) => user !== loggedOutUserId)
+        // );
+        // {loggedOutUserId:currentUserId, lastSeen:new Date()}
+      if (localStorage.loggedOutUsers) {
+        const outUsers=JSON.parse(localStorage.loggedOutUsers);
+
         localStorage.setItem(
           "loggedOutUsers",
-          JSON.stringify({ loggedOutUserId, lastSeen })
+          JSON.stringify([...outUsers,{ loggedOutUserId, lastSeen }])
+        );
+      }else{
+        localStorage.setItem(
+          "loggedOutUsers",
+          JSON.stringify([{ loggedOutUserId, lastSeen }])
         );
         console.log({ loggedOutUserId, lastSeen });
+        console.log("I'm seen");
+      }
         setLoggedOutUsers([...loggedOutUsers, { loggedOutUserId, lastSeen }]);
       });
 
       return () => {
-        socket.off("onlineUsers");
-        socket.off("userDisconnected");
+        socket.current.off("onlineUsers");
+        socket.current.off("userDisconnected");
       };
     }
-  }, [currentUser, socket
+  }, [currentUser, socket.current
   ]);
 
   useEffect(() => {
@@ -134,7 +145,7 @@ const Chat = () => {
       to: currentChat._id,
       message,
     });
-    socket.emit("send-message", {
+    socket.current.emit("send-message", {
       from: currentUser._id,
       to: currentChat._id,
       message,
@@ -191,8 +202,9 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (socket) {
-      socket.on("received-message", (data) => {
+    if (socket.current) {
+      socket.current.on("received-message", (data) => {
+      console.log(data);
         setArrivedMessage({
           fromSelf: false,
           message: data.message,
@@ -200,7 +212,7 @@ const Chat = () => {
         });
       });
     }
-  }, [messages]);
+  }, [messages,socket.current]);
   useEffect(() => {
     arrivedMessage && setMessages([...messages, arrivedMessage]);
   }, [arrivedMessage]);
@@ -264,8 +276,10 @@ const Chat = () => {
       </div>
       <div className={mynav}>
         <Navbar
+         socket={socket.current}
           currentPosition={currentPosition}
           setCurrentPosition={setCurrentPosition}
+          currentUser={currentUser}
         />
       </div>
       <div className="chat-container">
@@ -276,7 +290,7 @@ const Chat = () => {
               currentUser={currentUser}
               currentPosition={currentPosition}
               setCurrentPosition={setCurrentPosition}
-              socket={socket}
+              socket={socket.current}
             />
           </div>
           <div className="col-12 col-md-11 contacts-cover">
@@ -420,14 +434,14 @@ const Chat = () => {
                     <div className="chat-field">
                       <div>
                         <GroupMessages
-                          socket={socket}
+                          socket={socket.current}
                           messages={groupMessages}
                           setMessages={setGroupMessages}
                           currentGroup={currentChat}
                           currentUser={currentUser}
                         />
                         <GroupChatInput
-                          socket={socket}
+                          socket={socket.current}
                           messages={groupMessages}
                           setMessages={setGroupMessages}
                           currentGroup={currentChat}

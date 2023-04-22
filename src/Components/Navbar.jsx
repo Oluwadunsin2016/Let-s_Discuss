@@ -1,11 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = ({currentPosition, setCurrentPosition }) => {
+const Navbar = ({currentPosition, setCurrentPosition,socket,currentUser }) => {
 const navigate=useNavigate()
+
  const logOut = () => {
-    // localStorage.removeItem("current_user");
-    // navigate("/login");
+  console.log(socket);
+if (socket) {
+  //  socket.emit('disconnectMe',currentUser._id)
+   socket.disconnect()
+    localStorage.removeItem("current_user");
+    navigate("/login");
+  };
   };
 
 const changePosition=(name)=>{
@@ -20,9 +26,6 @@ setCurrentPosition(name)
         <li className={`${currentPosition==="Profile"?"current":""}`} onClick={()=>changePosition("Profile")}>Profile</li>
         <li onClick={logOut}>Logout</li>
       </ul>
-      {/* <ul className="d-flex justify-content-between list-unstyled my-2">
-        
-      </ul> */}
     </div>
   );
 };

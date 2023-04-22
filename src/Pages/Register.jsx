@@ -1,13 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
 import { BsFillChatFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../asset/logo.svg";
+import { io } from "socket.io-client";
 import ToastContainer from "../Components/Toast/Toast";
 import { setToast } from "../Components/Toast/toastUtils";
-import { registerRoute } from "../Utils/APIRoutes";
+import { host, registerRoute } from "../Utils/APIRoutes";
 
 const Register = () => {
+const socket =useRef()
     const navigate = useNavigate();
 
   const [values, setvalues] = useState({
@@ -44,6 +46,8 @@ const Register = () => {
     console.log(data);
     if (data.status) {
     setToast("success","Registration successful")
+    socket.current=io(host);
+socket.current.emit("add-user", data.user._id);
       localStorage.setItem("current_user", JSON.stringify(data.user));
       navigate("/");
     }else{
@@ -85,7 +89,7 @@ const Register = () => {
       <div className="auth-container">
         <form onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
-          <BsFillChatFill size={50}/>
+          <BsFillChatFill size={40}/>
             <h3>Let's Discuss</h3>
           </div>
           <input
