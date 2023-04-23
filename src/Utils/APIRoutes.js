@@ -1,4 +1,5 @@
-export const host="http://localhost:2500"
+// export const host="http://localhost:2500"
+export const host="https://let-us-discuss-server.vercel.app"
 export const registerRoute=`${host}/api/auth/register`
 export const loginRoute=`${host}/api/auth/login`
 export const allUsersRoute=`${host}/api/auth/allUsers`
