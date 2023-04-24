@@ -167,9 +167,9 @@ body {
   color: #ebe7ff;
 } */
 
-.chat-container .chat-field {
+.chat-container .chat-area {
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
     url("https://media.istockphoto.com/id/498309616/photo/great-ocean-road-at-night-milky-way-view.jpg?s=612x612&w=0&k=20&c=fJGWCAB4JoXaQD6gjJRHjPmPIRvx5e6K-1Oq2EeOZwk=");
   background-position: center;

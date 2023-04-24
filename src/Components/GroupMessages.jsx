@@ -11,8 +11,12 @@ const GroupMessages = ({
   setMessages,
   socket,
 }) => {
-  const scrollRef = useRef();
   const [members, setMembers] = useState([]);
+
+  const scrollRef=useRef()
+useEffect(() => {
+scrollRef.current?.scrollIntoView({behaviour:"smooth"})
+}, [messages])
 
   useEffect(() => {
     getGroupMessages();
@@ -72,10 +76,6 @@ const GroupMessages = ({
       return timeIn12Hrs;
     }
   };
-
-  useEffect(() => {
-    // scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
-  }, [messages]);
 
   return (
     <div className="message-container">

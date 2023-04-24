@@ -77,8 +77,8 @@ const Chat = () => {
   };
 
   // To keep track of the online Users
-    socket.current = io(host);
-    // const  socket = io(host);
+  socket.current = io(host);
+  // const  socket = io(host);
   useEffect(() => {
     if (currentUser) {
       // console.log(socket.current);
@@ -98,21 +98,21 @@ const Chat = () => {
         //   users.filter((user) => user !== loggedOutUserId)
         // );
         // {loggedOutUserId:currentUserId, lastSeen:new Date()}
-      if (localStorage.loggedOutUsers) {
-        const outUsers=JSON.parse(localStorage.loggedOutUsers);
+        if (localStorage.loggedOutUsers) {
+          const outUsers = JSON.parse(localStorage.loggedOutUsers);
 
-        localStorage.setItem(
-          "loggedOutUsers",
-          JSON.stringify([...outUsers,{ loggedOutUserId, lastSeen }])
-        );
-      }else{
-        localStorage.setItem(
-          "loggedOutUsers",
-          JSON.stringify([{ loggedOutUserId, lastSeen }])
-        );
-        console.log({ loggedOutUserId, lastSeen });
-        console.log("I'm seen");
-      }
+          localStorage.setItem(
+            "loggedOutUsers",
+            JSON.stringify([...outUsers, { loggedOutUserId, lastSeen }])
+          );
+        } else {
+          localStorage.setItem(
+            "loggedOutUsers",
+            JSON.stringify([{ loggedOutUserId, lastSeen }])
+          );
+          console.log({ loggedOutUserId, lastSeen });
+          console.log("I'm seen");
+        }
         setLoggedOutUsers([...loggedOutUsers, { loggedOutUserId, lastSeen }]);
       });
 
@@ -121,8 +121,7 @@ const Chat = () => {
         socket.current.off("userDisconnected");
       };
     }
-  }, [currentUser, socket.current
-  ]);
+  }, [currentUser, socket.current]);
 
   useEffect(() => {
     getAllUsers();
@@ -204,7 +203,7 @@ const Chat = () => {
   useEffect(() => {
     if (socket.current) {
       socket.current.on("received-message", (data) => {
-      console.log(data);
+        console.log(data);
         setArrivedMessage({
           fromSelf: false,
           message: data.message,
@@ -212,7 +211,7 @@ const Chat = () => {
         });
       });
     }
-  }, [messages,socket.current]);
+  }, [messages, socket.current]);
   useEffect(() => {
     arrivedMessage && setMessages([...messages, arrivedMessage]);
   }, [arrivedMessage]);
@@ -276,7 +275,7 @@ const Chat = () => {
       </div>
       <div className={mynav}>
         <Navbar
-         socket={socket.current}
+          socket={socket.current}
           currentPosition={currentPosition}
           setCurrentPosition={setCurrentPosition}
           currentUser={currentUser}
@@ -381,58 +380,71 @@ const Chat = () => {
               <div>
                 {currentChat && (
                   <div className="h-100">
-                    <div className="profile-nav d-flex justify-content-between align-items-center">
-                      <div
-                        className="profile w-100 w-md-75 w-lg-100"
-                        onClick={() => changeGroupFunction("Group Information")}
-                      >
-                        <div className="image">
-                          <img src={currentChat.profileImage} alt="picture" />
-                        </div>
-                        <div className="currentGroupName">
-                          <h5 className="mb-0">
-                            {currentChat.userName
-                              ? currentChat.userName
-                              : currentChat.name}
-                          </h5>
-                          <p className="m-0 ps-4 text-white">Tap for Info</p>
-                        </div>
-                      </div>
-                      <div
-                        className="text-light moreVertical"
-                        onClick={() => setShowDropdown(!showDropdown)}
-                      >
-                        <FiMoreVertical size={30} />
-                      </div>
-                    </div>
-                    {/* This is group info dropdown */}
-                    {showDropdown && (
-                      <div className="dropDown">
-                        <ul className="list-unstyled">
-                          {currentChat.admin == currentUser._id && (
-                            <li
-                              onClick={() => changeGroupFunction("Add Member")}
-                            >
-                              Add Member
-                            </li>
-                          )}
-                          <li
-                            onClick={() => changeGroupFunction("Group Members")}
-                          >
-                            Group Members
-                          </li>
-                          <li
-                            onClick={() =>
-                              changeGroupFunction("Group Information")
-                            }
-                          >
-                            Group Informations
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                    <div className="chat-field">
+                    <div className="chat-area">
                       <div>
+                        <div className="head">
+                          <div className="profile-nav d-flex justify-content-between align-items-center">
+                            <div
+                              className="profile w-100 w-md-75 w-lg-100"
+                              onClick={() =>
+                                changeGroupFunction("Group Information")
+                              }
+                            >
+                              <div className="image">
+                                <img
+                                  src={currentChat.profileImage}
+                                  alt="picture"
+                                />
+                              </div>
+                              <div className="currentGroupName">
+                                <h5 className="mb-0">
+                                  {currentChat.userName
+                                    ? currentChat.userName
+                                    : currentChat.name}
+                                </h5>
+                                <p className="m-0 ps-4 text-white">
+                                  Tap for Info
+                                </p>
+                              </div>
+                            </div>
+                            <div
+                              className="text-light moreVertical"
+                              onClick={() => setShowDropdown(!showDropdown)}
+                            >
+                              <FiMoreVertical size={30} />
+                            </div>
+                          </div>
+                          {/* This is group info dropdown */}
+                          {showDropdown && (
+                            <div className="dropDown">
+                              <ul className="list-unstyled">
+                                {currentChat.admin == currentUser._id && (
+                                  <li
+                                    onClick={() =>
+                                      changeGroupFunction("Add Member")
+                                    }
+                                  >
+                                    Add Member
+                                  </li>
+                                )}
+                                <li
+                                  onClick={() =>
+                                    changeGroupFunction("Group Members")
+                                  }
+                                >
+                                  Group Members
+                                </li>
+                                <li
+                                  onClick={() =>
+                                    changeGroupFunction("Group Information")
+                                  }
+                                >
+                                  Group Informations
+                                </li>
+                              </ul>
+                            </div>
+                          )}
+                        </div>
                         <GroupMessages
                           socket={socket.current}
                           messages={groupMessages}
@@ -462,24 +474,47 @@ const Chat = () => {
               <div>
                 {currentChat && (
                   <div className="h-100">
-                    <div className="profile-nav">
-                      <div className="profile" onClick={view}>
-                        <div className="image">
-                          <img src={currentChat.profileImage} alt="picture" />
-                        </div>
-                        <div>
-                          <h5 className="mb-0">
-                            {currentChat.userName
-                              ? currentChat.userName
-                              : currentChat.name}
-                          </h5>
-                          <span key={currentChat._id}>
-                        {onlineUsers && <p className="m-0">{onlineUsers.includes(currentChat._id)? <span className="onlineUser ps-2 m-0">online</span> : <span className="text-white">{lastSeen(currentChat._id)?<LastSeen time={lastSeen(currentChat._id)} />:"offline"}</span>}</p> }
-                       </span>
+                    <div className="chat-area">
+                      <div className="head">
+                        <div className="profile-nav">
+                          <div className="profile" onClick={view}>
+                            <div className="image">
+                              <img
+                                src={currentChat.profileImage}
+                                alt="picture"
+                              />
+                            </div>
+                            <div>
+                              <h5 className="mb-0">
+                                {currentChat.userName
+                                  ? currentChat.userName
+                                  : currentChat.name}
+                              </h5>
+                              <span key={currentChat._id}>
+                                {onlineUsers && (
+                                  <p className="m-0">
+                                    {onlineUsers.includes(currentChat._id) ? (
+                                      <span className="onlineUser ps-2 m-0">
+                                        online
+                                      </span>
+                                    ) : (
+                                      <span className="text-white">
+                                        {lastSeen(currentChat._id) ? (
+                                          <LastSeen
+                                            time={lastSeen(currentChat._id)}
+                                          />
+                                        ) : (
+                                          "offline"
+                                        )}
+                                      </span>
+                                    )}
+                                  </p>
+                                )}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="chat-field">
                       <Messages messages={messages} />
                       <ChatInput handleSendMsg={handleSendMsg} />
                     </div>
