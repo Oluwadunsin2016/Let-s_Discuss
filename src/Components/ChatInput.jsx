@@ -49,7 +49,7 @@ const inputRef=createRef()
       </div>
 
         <input
-        ref={inputRef}
+          ref={inputRef}
           type="text"
           value={msg}
           onChange={(e) => setMsg(e.target.value)}

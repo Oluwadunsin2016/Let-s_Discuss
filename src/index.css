@@ -124,6 +124,20 @@ body {
   height: 4rem;
   padding: 10px 20px;
 }
+.back{
+border-radius: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+height: 35px;
+width: 35px;
+}
+.back:hover{
+cursor: pointer;
+}
+.back:active{
+background-color: rgba(252, 247, 247, 0.2);
+}
 .chat-container .profile-nav .profile {
   display: flex;
   align-items: center;
@@ -496,7 +510,7 @@ padding-top: 1rem;
 
 /* ----------- Message Component ----------- */
 .message-container {
-  height: 81vh;
+  height: 82vh;
   padding: 1rem 2rem;
   display: flex;
   flex-direction: column;

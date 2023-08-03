@@ -3,8 +3,9 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getMembersRoute } from "../Utils/APIRoutes";
+import { BiArrowBack } from "react-icons/bi";
 
-const GroupMembers = ({ currentGroup,setCurrentPosition,setCurrentMember,currentUser, }) => {
+const GroupMembers = ({ currentGroup,setCurrentPosition,setCurrentMember,currentUser,showChat }) => {
 const [members, setMembers] = useState([]);
 
   useEffect(() => {
@@ -32,7 +33,12 @@ const [members, setMembers] = useState([]);
 
   return (
     <div className="contacts-container px-4">
-      <h3 className="text-center text-white py-4">Group Members</h3>
+      <div className="d-flex py-4">
+      <div className="back text-white me-2 d-md-none" onClick={showChat}>
+        <BiArrowBack size={25} />
+      </div>
+      <h3 className="text-center text-white w-100">Group Members</h3>
+     </div>
       <div className="contacts">
         {members.map((member) => {
           return (

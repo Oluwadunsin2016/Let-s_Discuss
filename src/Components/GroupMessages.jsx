@@ -82,7 +82,8 @@ scrollRef.current?.scrollIntoView({behaviour:"smooth"})
       {messages &&
         messages.map((message) => {
           return (
-            <div key={uuidv4()} ref={scrollRef}>
+            // <div key={uuidv4()} ref={scrollRef}>
+            <div key={uuidv4()}>
               <div
                 className={`message ${
                   message.sender == currentUser._id ? "sent" : "received"

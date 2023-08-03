@@ -10,6 +10,7 @@ import {
   sendMessageRoute,
 } from "../Utils/APIRoutes";
 import { FiMoreVertical } from "react-icons/fi";
+import { BiArrowBack } from "react-icons/bi";
 import Welcome from "../Components/Welcome";
 import Messages from "../Components/Messages";
 import ChatInput from "../Components/ChatInput";
@@ -324,6 +325,7 @@ const Chat = () => {
             )}
             {currentPosition === "Add Member" && (
               <AddGroupMember
+              showChat={showChat}
                 contacts={contacts}
                 currentGroup={groupMode ? currentChat : []}
               />
@@ -334,6 +336,7 @@ const Chat = () => {
                 currentUser={currentUser}
                 setCurrentPosition={setCurrentPosition}
                 setCurrentMember={setCurrentMember}
+                showChat={showChat}
               />
             )}
             {currentPosition === "Group Information" && (
@@ -346,6 +349,7 @@ const Chat = () => {
                 setCurrentGroup={setCurrentChat}
                 setCurrentPosition={setCurrentPosition}
                 setCurrentMember={setCurrentMember}
+                showChat={showChat}
               />
             )}
 
@@ -384,6 +388,9 @@ const Chat = () => {
                       <div>
                         <div className="head">
                           <div className="profile-nav d-flex justify-content-between align-items-center">
+                          <div className="back text-white me-2 d-md-none" onClick={hideChat}>
+                        <BiArrowBack size={25}/>
+                        </div>
                             <div
                               className="profile w-100 w-md-75 w-lg-100"
                               onClick={() =>
@@ -476,7 +483,10 @@ const Chat = () => {
                   <div className="h-100">
                     <div className="chat-area">
                       <div className="head">
-                        <div className="profile-nav">
+                        <div className="profile-nav d-flex align-items-center">
+                        <div className="back text-white me-2 d-md-none" onClick={hideChat}>
+                        <BiArrowBack size={25}/>
+                        </div>
                           <div className="profile" onClick={view}>
                             <div className="image">
                               <img
