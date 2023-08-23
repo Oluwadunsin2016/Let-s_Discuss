@@ -33,6 +33,7 @@ import LastSeen from "../Components/LastSeen";
 const Chat = () => {
   const navigate = useNavigate();
   const socket = useRef();
+  const [isLoading, setIsLoading] = useState(false)
   const [contacts, setContacts] = useState([]);
   const [chats, setChats] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
@@ -49,6 +50,8 @@ const Chat = () => {
   const [groupMessages, setGroupMessages] = useState([]);
   const [currentMember, setCurrentMember] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [currentGroup, setCurrentGroup] = useState(undefined);
+  const [backTo, setBackTo] = useState(null);
   const [loggedOutUsers, setLoggedOutUsers] = useState(
     JSON.parse(localStorage.getItem("loggedOutUsers")) || []
   );
@@ -177,8 +180,10 @@ const Chat = () => {
     getChattedUsers();
   }, [contacts, messages]);
 
-  const getChattedUsers = async () => {
-    const { data } = await axios.get(getAllMessagesRoute);
+  const getChattedUsers = () => {
+  setIsLoading(true)
+    axios.get(getAllMessagesRoute).then(res=>{
+     const data  = res.data
     const currentMessages = data.messages.filter((message, id) => {
       if (currentUser) {
         return (
@@ -199,6 +204,7 @@ const Chat = () => {
       currentChattedIds.includes(contact._id)
     );
     setChats(currentChattedUsers);
+    });
   };
 
   useEffect(() => {
@@ -234,6 +240,7 @@ const Chat = () => {
 
   const changeGroupFunction = (name) => {
     setCurrentPosition(name);
+    setBackTo(name)
     setShowDropdown(false);
     hideChat();
   };
@@ -304,6 +311,8 @@ const Chat = () => {
                 showChat={showChat}
                 onlineUsers={onlineUsers}
                 loggedOutUsers={loggedOutUsers}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
               />
             )}
             {currentPosition === "Contacts" && (
@@ -312,27 +321,27 @@ const Chat = () => {
                 changeChat={changeChat}
                 setGroupMode={setGroupMode}
                 showChat={showChat}
+                isLoading={isLoading}
               />
             )}
             {currentPosition === "Groups" && (
               <Groups
-                contacts={contacts}
                 setGroupMode={setGroupMode}
                 currentUser={currentUser}
-                changeChat={changeChat}
                 showChat={showChat}
+                setCurrentGroup={setCurrentGroup}
               />
             )}
             {currentPosition === "Add Member" && (
               <AddGroupMember
               showChat={showChat}
                 contacts={contacts}
-                currentGroup={groupMode ? currentChat : []}
+                currentGroup={currentGroup}
               />
             )}
             {currentPosition === "Group Members" && (
               <GroupMembers
-                currentGroup={groupMode ? currentChat : []}
+                currentGroup={currentGroup}
                 currentUser={currentUser}
                 setCurrentPosition={setCurrentPosition}
                 setCurrentMember={setCurrentMember}
@@ -341,7 +350,7 @@ const Chat = () => {
             )}
             {currentPosition === "Group Information" && (
               <GroupInformation
-                currentGroup={groupMode ? currentChat : []}
+                currentGroup={currentGroup}
                 setIsProfilePictureSet={setIsProfilePictureSet}
                 isCompleted={isCompleted}
                 setIsCompleted={setIsCompleted}
@@ -359,7 +368,8 @@ const Chat = () => {
                 changeChat={changeChat}
                 showChat={showChat}
                 currentMember={currentMember}
-                currentGroup={groupMode ? currentChat : []}
+                setCurrentPosition={setCurrentPosition}
+                backTo={backTo}
               />
             )}
 
@@ -374,7 +384,7 @@ const Chat = () => {
             )}
           </div>
         </div>
-        {isloaded && currentChat === undefined ? (
+        {(isloaded && currentChat === undefined) && (isloaded && currentGroup === undefined) ? (
           <div className={main}>
             <Welcome currentUser={currentUser} />
           </div>
@@ -382,7 +392,7 @@ const Chat = () => {
           <div className={`${main} chatContainer`}>
             {groupMode ? (
               <div>
-                {currentChat && (
+                {currentGroup && (
                   <div className="h-100">
                     <div className="chat-area">
                       <div>
@@ -399,15 +409,15 @@ const Chat = () => {
                             >
                               <div className="image">
                                 <img
-                                  src={currentChat.profileImage}
+                                  src={currentGroup.profileImage}
                                   alt="picture"
                                 />
                               </div>
                               <div className="currentGroupName">
                                 <h5 className="mb-0">
-                                  {currentChat.userName
-                                    ? currentChat.userName
-                                    : currentChat.name}
+                                  {currentGroup.userName
+                                    ? currentGroup.userName
+                                    : currentGroup.name}
                                 </h5>
                                 <p className="m-0 ps-4 text-white">
                                   Tap for Info
@@ -425,7 +435,7 @@ const Chat = () => {
                           {showDropdown && (
                             <div className="dropDown">
                               <ul className="list-unstyled">
-                                {currentChat.admin == currentUser._id && (
+                                {currentGroup.admin == currentUser._id && (
                                   <li
                                     onClick={() =>
                                       changeGroupFunction("Add Member")
@@ -456,21 +466,21 @@ const Chat = () => {
                           socket={socket.current}
                           messages={groupMessages}
                           setMessages={setGroupMessages}
-                          currentGroup={currentChat}
+                          currentGroup={currentGroup}
                           currentUser={currentUser}
                         />
                         <GroupChatInput
                           socket={socket.current}
                           messages={groupMessages}
                           setMessages={setGroupMessages}
-                          currentGroup={currentChat}
+                          currentGroup={currentGroup}
                           currentUser={currentUser}
                         />
                       </div>
                     </div>
                     <div className="chatDetails d-none">
                       <CurrentChatDetails
-                        currentChat={currentChat}
+                        currentChat={currentGroup}
                         cover={cover}
                       />
                     </div>

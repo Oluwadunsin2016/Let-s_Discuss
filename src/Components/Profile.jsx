@@ -37,7 +37,7 @@ const Profile = ({
     }
   }, [file]);
 
-console.log(currentUser);
+// console.log(currentUser);
   const getFile = (e) => {
     const myFile = e.target.files[0];
     const reader = new FileReader();

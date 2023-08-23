@@ -2,7 +2,6 @@ import React from "react";
 import robot from '../asset/robot.gif'
 
 const Welcome = ({currentUser}) => {
-console.log(currentUser);
   return (
     <div className="welcome-container">
       <img src={robot} alt="robot" />

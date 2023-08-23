@@ -9,16 +9,17 @@ import {
   getGroupsRoute,
 } from "../Utils/APIRoutes";
 
-const Groups = ({ changeChat, currentUser, setGroupMode,showChat }) => {
+const Groups = ({ currentUser, setGroupMode, showChat,setCurrentGroup }) => {
   const inputRef = useRef();
   const [currentSelected, setCurrentSelected] = useState(undefined);
   const [groups, setGroups] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const changeCurrentChat = (group, id) => {
     setCurrentSelected(id);
-    changeChat(group);
+  setCurrentGroup(group)
     setGroupMode(true);
-    showChat()
+    showChat();
   };
 
   const showCreateGroup = () => {
@@ -32,19 +33,25 @@ const Groups = ({ changeChat, currentUser, setGroupMode,showChat }) => {
     getGroups();
   }, []);
 
-  const getGroups = async () => {
-    const { data } = await axios.post(getGroupsRoute, {
-      member: currentUser._id,
-    });
-    const groupsIds = data.whereIAmAMember.map((member) => member.group);
-    const groupsIBelong = data.Groups.filter((group) =>
-      groupsIds.includes(group._id)
-    );
-    setGroups(groupsIBelong);
+  const getGroups = () => {
+    setIsLoading(true);
+    axios
+      .post(getGroupsRoute, {
+        member: currentUser._id,
+      })
+      .then((res) => {
+        const data = res.data;
+        const groupsIds = data.whereIAmAMember.map((member) => member.group);
+        const groupsIBelong = data.Groups.filter((group) =>
+          groupsIds.includes(group._id)
+        );
+        setGroups(groupsIBelong);
+        setIsLoading(false);
+      });
   };
   const save = async () => {
     if (inputRef.current.value != "") {
-      const { data } = await axios.post(createGroupRoute, {
+      const { data } = axios.post(createGroupRoute, {
         name: inputRef.current.value,
         admin: currentUser._id,
       });
@@ -81,7 +88,11 @@ const Groups = ({ changeChat, currentUser, setGroupMode,showChat }) => {
           Create Group
         </button>
         <div className="second d-none mx-2">
-          <IoMdCloseCircle onClick={cancel} size={40} className="text-danger mt-4" />
+          <IoMdCloseCircle
+            onClick={cancel}
+            size={40}
+            className="text-danger mt-4"
+          />
           <div className="form-floating text-white w-100 mx-2">
             <input
               ref={inputRef}
@@ -100,26 +111,40 @@ const Groups = ({ changeChat, currentUser, setGroupMode,showChat }) => {
           />
         </div>
       </div>
-      <div className="contacts">
-        {groups.map((group) => {
-          return (
-            <div
-              className={`contact w-100 ${
-                currentSelected === group._id ? "selected" : null
-              }`}
-              key={group._id}
-              onClick={() => changeCurrentChat(group, group._id)}
-            >
-              <div className="image">
-                <img src={group.profileImage} alt="picture" />
-              </div>
-              <div className="username text-white">
-                <h4 className="">{group.name}</h4>
-              </div>
+      {isLoading ? (
+        <div className="d-flex justify-content-center align-items-center mt-5">
+          <div className="spinner-border text-light mx-auto" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <div className="contacts">
+          {groups.length == 0 ? (
+            <div className="text-white text-center">
+              <h5>You've not been added to any group. Create a group!</h5>
             </div>
-          );
-        })}
-      </div>
+          ) : (
+            groups.map((group) => {
+              return (
+                <div
+                  className={`contact w-100 ${
+                    currentSelected === group._id ? "selected" : null
+                  }`}
+                  key={group._id}
+                  onClick={() => changeCurrentChat(group, group._id)}
+                >
+                  <div className="image">
+                    <img src={group.profileImage} alt="picture" />
+                  </div>
+                  <div className="username text-white">
+                    <h4 className="">{group.name}</h4>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 };

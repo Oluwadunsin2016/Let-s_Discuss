@@ -1,17 +1,31 @@
 import React from "react";
 import { useState } from "react";
 import ImageView from "./ImageView";
+import { BiArrowBack } from "react-icons/bi";
 
-const CurrentMemberInfo = ({ currentMember, changeChat, setGroupMode,showChat }) => {
+const CurrentMemberInfo = ({ currentMember, changeChat, setGroupMode,showChat,setCurrentPosition,backTo }) => {
 const [viewProfilePicture, setViewProfilePicture] = useState(false);
   const message = () => {
     setGroupMode(false);
     changeChat(currentMember);
     showChat()
   };
+
+  const goBack=()=>{
+  setCurrentPosition(backTo)
+  setGroupMode(true);
+  }
+
+
+
   return (
     <div className="contacts-container px-4">
-      <h3 className="text-center text-white py-4">Member Infos</h3>
+       <div className="d-flex py-4">
+      <div className="back text-white me-2" onClick={goBack}>
+        <BiArrowBack size={25} />
+      </div>
+      <h3 className="text-center text-white w-100">Member Information</h3>
+     </div>
       <div className="contacts">
         {currentMember && (
           <div className="groupInfo text-white mb-5">

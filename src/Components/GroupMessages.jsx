@@ -24,11 +24,11 @@ scrollRef.current?.scrollIntoView({behaviour:"smooth"})
   }, [currentGroup]);
 
   const getGroupMembers = async () => {
-    console.log(currentGroup);
+    // console.log(currentGroup);
     const { data } = await axios.post(getMembersRoute, {
       group: currentGroup._id,
     });
-    console.log(data);
+    // console.log(data);
     const memberIds = data.members.map((member) => member.member);
     setMembers(data.users.filter((user) => memberIds.includes(user._id)));
   };
@@ -57,7 +57,7 @@ scrollRef.current?.scrollIntoView({behaviour:"smooth"})
 
   const time = (message) => {
     // To get the time of the last message
-    console.log(message);
+    // console.log(message);
     if (message) {
       const dateObj = new Date(message.createdAt);
       const hours = dateObj.getHours();

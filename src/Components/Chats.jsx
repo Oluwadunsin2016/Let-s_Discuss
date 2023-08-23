@@ -9,9 +9,12 @@ const Chats = ({
   setGroupMode,
   showChat,
   onlineUsers,
-  loggedOutUsers
+  loggedOutUsers,
+  isLoading,
+  setIsLoading
 }) => {
   const [currentSelected, setCurrentSelected] = useState(undefined);
+  const [reArrangedChat, setReArrangedChat] = useState([])
 
   const changeCurrentChat = (chat, id) => {
     setCurrentSelected(id);
@@ -20,8 +23,22 @@ const Chats = ({
     showChat();
   };
 
-  // console.log(onlineUsers);
+  useEffect(() => {
+ if(chatMessages.length!=0){
+  reArrangeChat(chatMessages.reverse())
+ }
+  }, [chatMessages])
 
+  const reArrangeChat=(earliest)=>{
+  console.log(earliest);
+  const lastChatted=chats.find(chat=>chat._id==earliest[0].users[1])
+  const targetted=chats.indexOf(lastChatted)
+  const reArranged=[...chats.slice(targetted),...chats.slice(0,targetted)];
+  setReArrangedChat(reArranged)
+  setIsLoading(false)
+  }
+
+// Getting a person's last message
   const getLastChat = (chatId) => {
     // To get the last message object
     const chatMessage = chatMessages
@@ -77,13 +94,19 @@ const Chats = ({
   return (
     <div className="contacts-container px-4 pt-md-0 pt-4">
       <h3 className="text-center text-white py-4 d-none d-md-block">Chats</h3>
+        {isLoading? <div className="d-flex justify-content-center align-items-center mt-5">
+        <div className="spinner-border text-light mx-auto" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+       </div> 
+       :
       <div className="contacts">
-        {chats.length==0 ? (
+        {reArrangedChat.length==0 ? (
           <div className="text-white text-center">
             <h5>Your chat history is empty!</h5>
           </div>
         ) : (
-          chats.map((chat) => {
+          reArrangedChat.map((chat) => {
             return (
               <div
                 className={`contact ${
@@ -117,6 +140,7 @@ const Chats = ({
           })
         )}
       </div>
+       }
     </div>
   );
 };

@@ -41,6 +41,7 @@ const GroupInformation = ({
   const [takePicture, setTakePicture] = useState(false);
   const [viewProfilePicture, setViewProfilePicture] = useState(false);
   const [groupEditMode, setGroupEditMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     getGroupMembers();
@@ -77,15 +78,17 @@ const GroupInformation = ({
     setTime(timeIn12Hrs);
   };
 
-  const getGroupMembers = async () => {
-    console.log(currentGroup);
-    const { data } = await axios.post(getMembersRoute, {
-      group: currentGroup._id,
+  const getGroupMembers = () => {
+  setIsLoading(true)
+    axios.post(getMembersRoute, { group: currentGroup._id }).then((res) => {
+      const data = res.data;
+      const memberIds = data.members.map((member) => member.member);
+      console.log(memberIds);
+      setMembers(
+        data.users.filter((user) => memberIds.includes(user._id))
+      );
+  setIsLoading(false)
     });
-    console.log(data);
-    const memberIds = data.members.map((member) => member.member);
-    console.log(memberIds);
-    setMembers(data.users.filter((user) => memberIds.includes(user._id)));
   };
 
   const openClose = () => {
@@ -166,6 +169,12 @@ const GroupInformation = ({
       </div>
       <h3 className="text-center text-white w-100">Group Information</h3>
      </div>
+        {isLoading? <div className="d-flex justify-content-center align-items-center mt-5">
+        <div className="spinner-border text-light mx-auto" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+       </div> 
+       :
       <div className="contacts">
         <div className="groupInfo text-white mb-5">
           <div className="cover">
@@ -301,6 +310,7 @@ const GroupInformation = ({
           );
         })}
       </div>
+}
       {takePicture && (
         <Camera setTakePicture={setTakePicture} setFile={setFile} />
       )}
