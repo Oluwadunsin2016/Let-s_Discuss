@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import profile from "../asset/default_user_image.png";
 import { addMemberRoute, getMembersRoute } from "../Utils/APIRoutes";
 import { BiArrowBack } from "react-icons/bi";
+import ToastContainer from "./Toast/Toast";
+import { setToast } from "./Toast/toastUtils";
 
 const AddGroupMember = ({ currentGroup, showChat }) => {
 const [isLoading, setIsLoading] = useState(false)
@@ -26,9 +28,14 @@ const [isLoading, setIsLoading] = useState(false)
   };
 
   const addMember = async (member) => {
-    const data = { member, group: currentGroup };
-    const response = await axios.post(addMemberRoute, data);
-    console.log(response);
+    const infos = { member, group: currentGroup };
+    const {data} = await axios.post(addMemberRoute, infos);
+    console.log(data);
+    if (data.success) {
+      setToast("success",data.message)
+    }else{
+      setToast("error",data.message)
+    }
   };
   return (
     <div className="contacts-container px-4">
@@ -38,6 +45,7 @@ const [isLoading, setIsLoading] = useState(false)
         </div>
         <h3 className="text-center text-white w-100">Add Member</h3>
       </div>
+      <ToastContainer/>
       {isLoading? <div className="d-flex justify-content-center align-items-center mt-5">
         <div class="spinner-border text-light mx-auto" role="status">
           <span class="visually-hidden">Loading...</span>
